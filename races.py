@@ -8,7 +8,7 @@ import psycopg2
 
 
 def menu():
-    print("[1] Print a todos os vinhos existentes")
+    print("[1] Print a todos")
     print("[2] Preparaçao dos dados para o dataset ")
     print("[3] Verificar quantos valores nulos existem ")
     print("[4] Criar estatísticas descritivas (apenas para colunas numéricas)")
