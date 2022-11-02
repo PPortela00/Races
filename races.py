@@ -20,7 +20,7 @@ def menu():
     print("[10] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
     print("[100] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
 
-    print("[0] Sair do programa.")
+    print("[0] Exit the program.")
 
 menu()
 option = int(input("Introduza o comando que pretende efetuar:\n"))
@@ -59,10 +59,10 @@ while option != 0:
         print("Tipo de variaveis e quantidade de dados em cada coluna")
         df.info()
     else:
-        print("Opçao Inválida.")
+        print("Invalid Option")
 
     print("\n")
     menu()
-    option = int(input("Introduza o comando que pretende efetuar:"))
+    option = int(input("Insert the command that you want to execute:"))
 
-print("Obrigado por usar este programa . Ate já ")
+print("Thanks for using this program. See you soon")
