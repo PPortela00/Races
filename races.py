@@ -5,29 +5,42 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 import psycopg2
-
+from load_races import con
 
 def menu():
-    print("[1] Print a todos")
-    print("[2] Preparaçao dos dados para o dataset ")
-    print("[3] Verificar quantos valores nulos existem ")
-    print("[4] Criar estatísticas descritivas (apenas para colunas numéricas)")
-    print("[5] Who run the fastest 10K race ever (name, birthdate, time)")
-    print("[6] What 10K race had the fastest average time (event, event date)?")
-    print("[7] What teams had more than 3 participants in the 2016 maratona (team)?")
-    print("[8] What are the 5 runners with more kilometers in total (name, birthdate, kms)?")
-    print("[9] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
-    print("[10] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
-    print("[100] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
+    print('\n')
+    print("[1] ")
+    print("[2]  ")
+    print("[3]  ")
+    print("[4] ")
+    print("[5] ")
+    print("[6] ")
+    print("[7] ")
+    print("[8] ")
+    print("[9] ")
+    print("[10] ")
+    print("---------------------------5 Questions ---------------------------")
+    print("[11] Who run the fastest 10K race ever (name, birthdate, time)")
+    print("[12] What 10K race had the fastest average time (event, event date)?")
+    print("[13] What teams had more than 3 participants in the 2016 maratona (team)?")
+    print("[14] What are the 5 runners with more kilometers in total (name, birthdate, kms)?")
+    print("[15] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
+    print("[16] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
 
     print("[0] Exit the program.")
 
 menu()
-option = int(input("Introduza o comando que pretende efetuar:\n"))
+option = int(input("Insert the command that you want to execute:\n"))
 
 while option != 0:
     if option == 1:
+        id = int(input('Employee ID: '))
+        cur = con.cursor()
+        cur.execute(f'SELECT * FROM employee WHERE id = {id}')
+        employee = cur.fetchone()
         print('\n')
+        print("Number Name Salary Dep Test")
+        print(employee)
     elif option == 2:
         print('\n')
     elif option == 3:
@@ -47,17 +60,7 @@ while option != 0:
     elif option == 10:
         print('\n')
     elif option == 100:
-        df.head()
-        print(df)
         print('\n')
-        print('Numero de elementos da matriz')
-        print(df.size)
-        print('\n')
-        print('Dimensão da matriz')
-        print(df.shape)
-        print('\n')
-        print("Tipo de variaveis e quantidade de dados em cada coluna")
-        df.info()
     else:
         print("Invalid Option")
 
