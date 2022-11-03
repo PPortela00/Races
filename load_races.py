@@ -12,7 +12,7 @@ def menu():
   print("[2] Create connection to the PostgreSQL for Miguel")
   print("[3] Create connection to the PostgreSQL for Luis")
   print("[4] Head, Size and Shape of Dataset")
-
+  print("[5] Remove all data from the database")
   print("[0] Let´s work with PostgreSQL and Python.")
 
 
@@ -57,13 +57,15 @@ while option != 0:
     print('Dimensão da matriz')
     print(df.shape)
     print('\n')
+  elif option == 5:
+    cur = con.cursor()
+    cur.execute('TRUNCATE TABLE Nome_Tabela')
   else:
     print("Invalid Option")
 
   print("\n")
   menu()
   option = int(input("Insert the command that you want to execute:"))
-
 
 
 

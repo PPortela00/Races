@@ -36,11 +36,17 @@ while option != 0:
     if option == 1:
         id = int(input('Employee ID: '))
         cur = con.cursor()
-        cur.execute(f'SELECT * FROM employee WHERE id = {id}')
-        employee = cur.fetchone()
-        print('\n')
-        print("Number Name Salary Dep Test")
-        print(employee)
+        #cur.execute(f'SELECT * FROM employee WHERE id = {id}')
+        cur.execute('SELECT * FROM employee')
+        employees = cur.fetchall()
+
+        from_db = []
+        for employee in employees:
+            result = list(employee)
+            from_db.append(result)
+        columns = ["Id", "Name", "Salary", "Id_Dep", "Id_Sup"]
+        df = pd.DataFrame(from_db, columns=columns)
+        print(df)
     elif option == 2:
         print('\n')
     elif option == 3:
