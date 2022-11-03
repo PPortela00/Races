@@ -1,41 +1,43 @@
 CREATE TABLE rider (
-  id_rider integer NOT NULL PRIMARY KEY,
+  id_rider integer PRIMARY KEY,
   name varchar NOT NULL,
   birth_date date NOT NULL,
   team CHARACTER VARYING,
-  name varchar NOT NULL UNIQUE REFERENCES sex,
-  id_nation integer NOT NULL UNIQUE REFERENCES nation,
-  id_age_classe integer NOT NULL UNIQUE REFERENCES age_classe
+  sex varchar NOT NULL REFERENCES sex,
+  id_nation integer NOT NULL REFERENCES nation,
+  id_age_class integer NOT NULL REFERENCES age_class
 );
 
 CREATE TABLE sex (
-  name varchar PRIMARY KEY ,
+  name varchar PRIMARY KEY
 );
 
 CREATE TABLE nation (
-  id_nation integer NOT NULL PRIMARY KEY,
+  id_nation integer PRIMARY KEY,
   name varchar NOT NULL UNIQUE
 );
 
 CREATE TABLE age_class (
-  id_age_classe integer NOT NULL PRIMARY KEY,
-  name CHARACTER VARYING NOT NULL UNIQUE
+  id_age_class integer PRIMARY KEY,
+  age_class CHARACTER VARYING NOT NULL UNIQUE
 );
 
 CREATE TABLE event (
   id_event integer PRIMARY KEY,
-  event varchar NOT NULL UNIQUE,
-  event_year integer NOT NULL UNIQUE,
-  distance CHARACTER VARYING NOT NULL UNIQUE,
-  bib integer NOT NUL,
-  id_rider integer NOT NULL UNIQUE REFERENCES rider 
+  event varchar NOT NULL,
+  event_year integer NOT NULL,
+  distance integer NOT NULL 
 );
 
 CREATE TABLE classification (
-  id_rider integer NOT NULL REFERENCES rider,
-  id_event integer NOT NULL REFERENCES event,
+  id_rider integer REFERENCES rider,
+  id_event integer REFERENCES event,
+  bib integer NOT NULL,
   place CHARACTER VARYING NOT NULL UNIQUE,
-  place_in_class CHARACTER VARYING NOT NULL UNIQUE,
+  place_in_class CHARACTER VARYING NOT NULL,
   official_time time NOT NULL,
-  net_time time NOT NULL
+  net_time time NOT NULL,
+  PRIMARY KEY (id_rider, id_event),
+  UNIQUE (id_event, bib),
+  UNIQUE (id_event, place)
 );
