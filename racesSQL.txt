@@ -33,7 +33,7 @@ CREATE TABLE classification (
   id_rider integer REFERENCES rider,
   id_event integer REFERENCES event,
   bib integer NOT NULL,
-  place CHARACTER VARYING NOT NULL UNIQUE,
+  place CHARACTER VARYING NOT NULL,
   place_in_class CHARACTER VARYING NOT NULL,
   official_time time NOT NULL,
   net_time time NOT NULL,
