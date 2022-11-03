@@ -1,5 +1,5 @@
-CREATE TABLE rider (
-  id_rider integer PRIMARY KEY,
+CREATE TABLE runner (
+  id_runner integer PRIMARY KEY,
   name varchar NOT NULL,
   birth_date date NOT NULL,
   team CHARACTER VARYING,
@@ -30,14 +30,14 @@ CREATE TABLE event (
 );
 
 CREATE TABLE classification (
-  id_rider integer REFERENCES rider,
+  id_runner integer REFERENCES runner,
   id_event integer REFERENCES event,
   bib integer NOT NULL,
   place CHARACTER VARYING NOT NULL,
   place_in_class CHARACTER VARYING NOT NULL,
   official_time time NOT NULL,
   net_time time NOT NULL,
-  PRIMARY KEY (id_rider, id_event),
+  PRIMARY KEY (id_runner, id_event),
   UNIQUE (id_event, bib),
   UNIQUE (id_event, place)
 );
