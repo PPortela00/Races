@@ -161,8 +161,6 @@ while option != 0:
       cur = con.cursor()
       cur.execute(lst_event[i])
 
-    """
-
     con.commit()
     con.close()
 
@@ -174,6 +172,6 @@ while option != 0:
   menu()
   option = int(input("Insert the command that you want to execute:"))
 
-   """
+
 
 
