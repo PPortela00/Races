@@ -1,11 +1,3 @@
-CREATE TABLE runner (
-  r_id integer PRIMARY KEY,
-  name varchar NOT NULL,
-  b_date date NOT NULL,
-  sex_id integer NOT NULL REFERENCES sex,
-  nation_id integer NOT NULL REFERENCES nation
-);
-
 CREATE TABLE sex (
   s_id integer PRIMARY KEY,
   sex varchar NOT NULL UNIQUE
@@ -16,9 +8,23 @@ CREATE TABLE nation (
   nation varchar NOT NULL UNIQUE
 );
 
+CREATE TABLE runner (
+  r_id integer PRIMARY KEY,
+  name varchar NOT NULL,
+  b_date date NOT NULL,
+  sex_id integer NOT NULL REFERENCES sex,
+  nation_id integer NOT NULL REFERENCES nation
+);
+
 CREATE TABLE age_class (
   a_id integer PRIMARY KEY,
   age_class CHARACTER VARYING NOT NULL UNIQUE
+);
+
+
+CREATE TABLE distance (
+  d_id integer PRIMARY KEY,
+  distance integer NOT NULL UNIQUE
 );
 
 CREATE TABLE event (
@@ -26,11 +32,6 @@ CREATE TABLE event (
   event varchar NOT NULL,
   e_year integer NOT NULL,
   distance integer NOT NULL REFERENCES distance
-);
-
-CREATE TABLE distance (
-  d_id integer PRIMARY KEY,
-  distance integer NOT NULL UNIQUE
 );
 
 CREATE TABLE classification (
