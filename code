@@ -1,0 +1,19 @@
+nation = races[['nation']]
+nation_dic = dict()
+lst_nation = list()
+n = 1
+
+for index, row in nation.iterrows():
+      if row['nation'] not in nation_dic.values():
+            nation_dic[n] = row['nation']
+            key = n
+            t = f"INSERT INTO nation VALUES ({key}, '{nation_dic[key]}');"
+            lst_nation.append(t)
+            n += 1
+
+for i in range(len(lst_nation)):
+      cur = con.cursor()
+      cur.execute(lst_nation[i])
+
+con.commit()
+con.close()
