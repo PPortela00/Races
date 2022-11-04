@@ -1,6 +1,6 @@
 import pandas as pd
 import psycopg2
-from sqlalchemy import delete
+'from sqlalchemy import delete'
 
 pd.set_option('display.max_columns', None)  # para poder visualizar todas as colunas no display
 pd.set_option('display.width', 1000)  # para a largura do display ser de dimensao 1000
@@ -44,10 +44,11 @@ while option != 0:
     print(con)
   elif option == 3:
     con = psycopg2.connect(
-      database="username",  # your database is the same as your username
-      user="username",  # your username
-      password="password",  # your password
+      database="fced_luis_henriques",  # your database is the same as your username
+      user="fced_luis_henriques",  # your username
+      password="henriques_luis_fced",  # your password
       host="dbm.fe.up.pt",  # the database host
+      port=5433,  # the database host
       options='-c search_path=schema'  # use the schema you want to connect to
     )
     print(con)
@@ -82,8 +83,7 @@ while option != 0:
     for index, row in sex.iterrows():
       if row['sex'] not in sex_dic.values():
         sex_dic[n] = row['sex']
-        key = n
-        t = f"INSERT INTO sex VALUES ({key}, '{sex_dic[key]}');"
+        t = f"INSERT INTO sex VALUES ({n}, '{sex_dic[n]}');"
         lst_sex.append(t)
         n += 1
 
@@ -100,8 +100,7 @@ while option != 0:
     for index, row in nation.iterrows():
       if row['nation'] not in nation_dic.values():
         nation_dic[n] = row['nation']
-        key = n
-        t = f"INSERT INTO nation VALUES ({key}, '{nation_dic[key]}');"
+        t = f"INSERT INTO nation VALUES ({n}, '{nation_dic[n]}');"
         lst_nation.append(t)
         n += 1
 
@@ -118,8 +117,7 @@ while option != 0:
     for index, row in age_class.iterrows():
       if row['age_class'] not in ageclass_dic.values():
         ageclass_dic[n] = row['age_class']
-        key = n
-        t = f"INSERT INTO age_class VALUES ({key}, '{ageclass_dic[key]}');"
+        t = f"INSERT INTO age_class VALUES ({n}, '{ageclass_dic[n]}');"
         lst_age_class.append(t)
         n += 1
 
@@ -136,8 +134,7 @@ while option != 0:
     for index, row in distance.iterrows():
       if row['distance'] not in distance_dic.values():
         distance_dic[n] = row['distance']
-        key = n
-        t = f"INSERT INTO distance VALUES ({key}, '{distance_dic[key]}');"
+        t = f"INSERT INTO distance VALUES ({n}, '{distance_dic[n]}');"
         lst_distance.append(t)
         n += 1
 
@@ -145,7 +142,7 @@ while option != 0:
       cur = con.cursor()
       cur.execute(lst_distance[i])
 
-    """ 
+
     #EVENT
     event = races[['event', 'event_year', 'distance']]
     event_dic = dict()
@@ -153,17 +150,16 @@ while option != 0:
     n = 1
 
     for index, row in event.iterrows():
-          t = [row['event'], row['event_year'],list(distance_dic.keys())[list(distance_dic.values()).index(row['distance'])]]
-          if row['event'] not in event_dic.values():
-                event_dic[n] = t
-                key = n
-                t = f"INSERT INTO event VALUES ({key}, '{event_dic[key][0]}', {int(event_dic[key][1])}, {int(event_dic[key][2])});"
-                lst_event.append(t)
-                n += 1
+      u = [row['event'], row['event_year'],list(distance_dic.keys())[list(distance_dic.values()).index(row['distance'])]]
+      if u not in event_dic.values():
+        event_dic[n] = u
+        t = f"INSERT INTO event VALUES ({n}, '{event_dic[n][0]}', {int(event_dic[n][1])}, {int(event_dic[n][2])});"
+        lst_event.append(t)
+        n += 1
 
     for i in range(len(lst_event)):
-          cur = con.cursor()
-          cur.execute(lst_event[i])
+      cur = con.cursor()
+      cur.execute(lst_event[i])
 
     """
 
@@ -178,6 +174,6 @@ while option != 0:
   menu()
   option = int(input("Insert the command that you want to execute:"))
 
-
+   """
 
 
