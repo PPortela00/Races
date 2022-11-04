@@ -12,8 +12,8 @@ CREATE TABLE runner (
   r_id integer PRIMARY KEY,
   name varchar NOT NULL,
   b_date date NOT NULL,
-  sex_id integer NOT NULL REFERENCES sex,
-  nation_id integer NOT NULL REFERENCES nation
+  sex_id integer NOT NULL REFERENCES sex ON DELETE CASCADE,
+  nation_id integer NOT NULL REFERENCES nation ON DELETE CASCADE
 );
 
 CREATE TABLE age_class (
@@ -31,18 +31,18 @@ CREATE TABLE event (
   e_id integer PRIMARY KEY,
   event varchar NOT NULL,
   e_year integer NOT NULL,
-  distance integer NOT NULL REFERENCES distance
+  distance integer NOT NULL REFERENCES distance ON DELETE CASCADE
 );
 
 CREATE TABLE classification (
-  runner_id integer REFERENCES runner,
-  event_id integer REFERENCES event,
+  runner_id integer REFERENCES runner ON DELETE CASCADE,
+  event_id integer REFERENCES event ON DELETE CASCADE,
   bib integer NOT NULL,
   place CHARACTER VARYING NOT NULL,
   c_place CHARACTER VARYING NOT NULL,
   o_time time NOT NULL,
   n_time time,
-  class_id integer REFERENCES age_class,
+  class_id integer REFERENCES age_class ON DELETE CASCADE,
   team CHARACTER VARYING,
   PRIMARY KEY (runner_id, event_id),
   UNIQUE (event_id, bib),
