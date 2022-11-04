@@ -34,11 +34,12 @@ while option != 0:
     print(con)
   elif option == 2:
     con = psycopg2.connect(
-      database="username",  # your database is the same as your username
-      user="username",  # your username
-      password="password",  # your password
+      database="fced_carlos_veloso",  # your database is the same as your username
+      user="fced_carlos_veloso",  # your username
+      password="tartaruga",  # your password
       host="dbm.fe.up.pt",  # the database host
-      options='-c search_path=schema'  # use the schema you want to connect to
+      port=5433,  # the database host
+      options='-c search_path=public'  # use the schema you want to connect to
     )
     print(con)
   elif option == 3:
