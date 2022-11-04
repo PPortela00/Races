@@ -1,0 +1,57 @@
+CREATE TABLE runner (
+  r_id integer PRIMARY KEY,
+  name varchar NOT NULL,
+  b_date date NOT NULL,
+  sex_id integer NOT NULL REFERENCES sex,
+  nation_id integer NOT NULL REFERENCES nation
+);
+
+CREATE TABLE sex (
+  s_id integer PRIMARY KEY,
+  sex varchar NOT NULL UNIQUE
+);
+
+CREATE TABLE nation (
+  n_id integer PRIMARY KEY,
+  nation varchar NOT NULL UNIQUE
+);
+
+CREATE TABLE age_class (
+  a_id integer PRIMARY KEY,
+  age_class CHARACTER VARYING NOT NULL UNIQUE
+);
+
+CREATE TABLE event (
+  e_id integer PRIMARY KEY,
+  event varchar NOT NULL,
+  e_year integer NOT NULL,
+  distance integer NOT NULL REFERENCES distance
+);
+
+CREATE TABLE distance (
+  d_id integer PRIMARY KEY,
+  distance integer NOT NULL UNIQUE
+);
+
+CREATE TABLE classification (
+  runner_id integer REFERENCES runner,
+  event_id integer REFERENCES event,
+  bib integer NOT NULL,
+  place CHARACTER VARYING NOT NULL,
+  c_place CHARACTER VARYING NOT NULL,
+  o_time time NOT NULL,
+  n_time time,
+  class_id integer REFERENCES age_class,
+  team CHARACTER VARYING,
+  PRIMARY KEY (runner_id, event_id),
+  UNIQUE (event_id, bib),
+  UNIQUE (event_id, place)
+);
+
+
+
+
+
+
+
+
