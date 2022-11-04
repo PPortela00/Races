@@ -37,14 +37,14 @@ while option != 0:
         id = int(input('Employee ID: '))
         cur = con.cursor()
         #cur.execute(f'SELECT * FROM employee WHERE id = {id}')
-        cur.execute('SELECT * FROM employee')
+        cur.execute('SELECT * FROM nation')
         employees = cur.fetchall()
 
         from_db = []
         for employee in employees:
             result = list(employee)
             from_db.append(result)
-        columns = ["Id", "Name", "Salary", "Id_Dep", "Id_Sup"]
+        columns = ["Id", "Name"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
     elif option == 2:

@@ -14,6 +14,7 @@ def menu():
   print("[3] Create connection to the PostgreSQL for Luis")
   print("[4] Head, Size and Shape of Dataset")
   print("[5] Remove all data from the database")
+  print("[6] Add all data to the database")
   print("[0] Let´s work with PostgreSQL and Python.")
 
 
@@ -28,7 +29,7 @@ while option != 0:
       password="!Pnp2186tenis",  # your password
       host="dbm.fe.up.pt",
       port=5433,  # the database host
-      options='-c search_path=teste'  # use the schema you want to connect to
+      options='-c search_path=public'  # use the schema you want to connect to
     )
     print(con)
   elif option == 2:
@@ -60,9 +61,18 @@ while option != 0:
     print('\n')
   elif option == 5:
     cur = con.cursor()
-    cur.execute('DELETE TABLE airport')
-    # cur.execute('TRUNCATE TABLE Nome_Tabela')
-    #cur.execute(delete(Nome da tabela))        Alternativa para apagar todos os dados de uma tabela
+    cur.execute('DELETE FROM sex')
+    cur.execute('DELETE FROM nation')
+    cur.execute('DELETE FROM runner')
+    cur.execute('DELETE FROM age_class')
+    cur.execute('DELETE FROM distance')
+    cur.execute('DELETE FROM event')
+    cur.execute('DELETE FROM classification')
+    con.commit()
+    print('All data was deleted with success')
+  elif option == 6:
+
+    print('All data was inserted with success')
   else:
     print("Invalid Option")
 
