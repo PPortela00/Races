@@ -1,5 +1,6 @@
 import pandas as pd
 import psycopg2
+from sqlalchemy import delete
 
 pd.set_option('display.max_columns', None)  # para poder visualizar todas as colunas no display
 pd.set_option('display.width', 1000)  # para a largura do display ser de dimensao 1000
@@ -27,7 +28,7 @@ while option != 0:
       password="!Pnp2186tenis",  # your password
       host="dbm.fe.up.pt",
       port=5433,  # the database host
-      options='-c search_path=ex_employees'  # use the schema you want to connect to
+      options='-c search_path=teste'  # use the schema you want to connect to
     )
     print(con)
   elif option == 2:
@@ -59,7 +60,9 @@ while option != 0:
     print('\n')
   elif option == 5:
     cur = con.cursor()
-    cur.execute('TRUNCATE TABLE Nome_Tabela')
+    cur.execute('DELETE TABLE airport')
+    # cur.execute('TRUNCATE TABLE Nome_Tabela')
+    #cur.execute(delete(Nome da tabela))        Alternativa para apagar todos os dados de uma tabela
   else:
     print("Invalid Option")
 
