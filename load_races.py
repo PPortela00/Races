@@ -73,78 +73,84 @@ while option != 0:
     print('All data was deleted with success')
   elif option == 6:
 
-    #NATION
+    # NATION
     nation = races[['nation']]
-
     nation_dic = dict()
+    lst_nation = list()
     n = 1
+
     for index, row in nation.iterrows():
       if row['nation'] not in nation_dic.values():
         nation_dic[n] = row['nation']
+        key = n
+        t = f"INSERT INTO nation VALUES ({key}, '{nation_dic[key]}');"
+        lst_nation.append(t)
         n += 1
 
-    for key in nation_dic:
-      print(f"INSERT INTO nation VALUES ({key}, '{nation_dic[key]}');")
+    for i in range(len(lst_nation)):
+      cur = con.cursor()
+      cur.execute(lst_nation[i])
 
-    #Age_Class
+    # AGE CLASS
     age_class = races[['age_class']]
-
-    ageClass_dic = dict()
+    ageclass_dic = dict()
+    lst_age_class = list()
     n = 1
+
     for index, row in age_class.iterrows():
-      if row['age_class'] not in ageClass_dic.values():
-        ageClass_dic[n] = row['age_class']
+      if row['age_class'] not in ageclass_dic.values():
+        ageclass_dic[n] = row['age_class']
+        key = n
+        t = f"INSERT INTO age_class VALUES ({key}, '{ageclass_dic[key]}');"
+        lst_age_class.append(t)
         n += 1
 
-    for key in ageClass_dic:
-      print(f"INSERT INTO age_class VALUES ({key}, '{ageClass_dic[key]}');")
+    for i in range(len(lst_age_class)):
+      cur = con.cursor()
+      cur.execute(lst_age_class[i])
 
+    # DISTANCE
+    distance = races[['distance']]
+    distance_dic = dict()
+    lst_distance = list()
+    n = 1
+
+    for index, row in distance.iterrows():
+      if row['distance'] not in distance_dic.values():
+        distance_dic[n] = row['distance']
+        key = n
+        t = f"INSERT INTO distance VALUES ({key}, '{distance_dic[key]}');"
+        lst_distance.append(t)
+        n += 1
+
+    for i in range(len(lst_distance)):
+      cur = con.cursor()
+      cur.execute(lst_distance[i])
+
+    """ 
     #EVENT
     event = races[['event', 'event_year', 'distance']]
-
     event_dic = dict()
+    lst_event = list()
     n = 1
+
     for index, row in event.iterrows():
-      t = [row['event'], row['event_year'],
-           list(distance_dic.keys())[list(distance_dic.values()).index(row['distance'])]]
-      if t not in event_dic.values():
-        event_dic[n] = t
-        n += 1
+          t = [row['event'], row['event_year'],list(distance_dic.keys())[list(distance_dic.values()).index(row['distance'])]]
+          if row['event'] not in event_dic.values():
+                event_dic[n] = t
+                key = n
+                t = f"INSERT INTO event VALUES ({key}, '{event_dic[key][0]}', {int(event_dic[key][1])}, {int(event_dic[key][2])});"
+                lst_event.append(t)
+                n += 1
 
-    for key in event_dic:
-      print(
-        f"INSERT INTO event VALUES ({key}, '{event_dic[key][0]}', {int(event_dic[key][1])}, {int(event_dic[key][2])});")
+    for i in range(len(lst_event)):
+          cur = con.cursor()
+          cur.execute(lst_event[i])
 
-    #SEX
-    sex = races[['sex']]
+    """
 
-    sex_dic = dict()
-    n = 1
-    for index, row in sex.iterrows():
-      if row['sex'] not in sex_dic.values():
-        sex_dic[n] = row['sex']
-        n += 1
-
-    for key in sex_dic:
-      print(f"INSERT INTO sex VALUES ({key}, '{sex_dic[key]}');")
-
-    #RUNNER
-    runner = races[['name', 'birth_date', 'team', 'sex', 'nation', 'age_class']]
-    n = 1
-
-    runner_dic = dict()
-    for index, row in runner.iterrows():
-      t = [row['name'], row['birth_date'], row['team'], row['sex'],
-           list(nation_dic.keys())[list(nation_dic.values()).index(row['nation'])],
-           list(ageClass_dic.keys())[list(ageClass_dic.values()).index(row['age_class'])]]
-      if t not in runner_dic.values():
-        runner_dic[n] = t
-        n += 1
-
-    for key in runner_dic:
-      print(
-        f"INSERT INTO runner VALUES ({key}, '{runner_dic[key][0]}', {runner_dic[key][1]}, '{runner_dic[key][2]}', '{runner_dic[key][3]}', {runner_dic[key][4]}, {runner_dic[key][5]});")
-
+    con.commit()
+    con.close()
 
     print('All data was inserted with success')
   else:
