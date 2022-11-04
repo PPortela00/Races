@@ -52,7 +52,7 @@ while option != 0:
     )
     print(con)
   elif option == 4:
-    print(races.head)
+    print(races.head(5))
     print('\n')
     print('Numero de elementos da matriz')
     print(races.size)
@@ -72,6 +72,24 @@ while option != 0:
     con.commit()
     print('All data was deleted with success')
   elif option == 6:
+
+    # SEX
+    sex = races[['sex']]
+    sex_dic = dict()
+    lst_sex = list()
+    n = 1
+
+    for index, row in sex.iterrows():
+      if row['sex'] not in sex_dic.values():
+        sex_dic[n] = row['sex']
+        key = n
+        t = f"INSERT INTO sex VALUES ({key}, '{sex_dic[key]}');"
+        lst_sex.append(t)
+        n += 1
+
+    for i in range(len(lst_sex)):
+      cur = con.cursor()
+      cur.execute(lst_sex[i])
 
     # NATION
     nation = races[['nation']]
