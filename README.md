@@ -8,7 +8,8 @@ Below, all the tasks carried out throughout the development of the project will 
 
 **UML Diagram (uml.png)** - Regarding the UML and the work that each one carried out at this stage, since this is the starting point of the database and the construction, this was one of the processes that required the most time and attention. We decided that each one would make their own and later we would join, analyse all the diagrams in order to obtain the most complete one that best fits and responds to all cases
 
-**Relational Text (relational.txt)** - 
+**Relational Text (relational.txt)** - The relational model was then carried out following the joint elaboration of the UML diagram.
+After the development of the UML diagram it was easy and intuitive to create the relational model based on the knowledge acquired during the course
 
 **SQL Script for the creation of the DB (races.sql)** - 
 
