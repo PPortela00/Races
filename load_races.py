@@ -1,6 +1,6 @@
 import pandas as pd
 import psycopg2
-'from sqlalchemy import delete'
+from datetime import datetime
 
 pd.set_option('display.max_columns', None)  # para poder visualizar todas as colunas no display
 pd.set_option('display.width', 1000)  # para a largura do display ser de dimensao 1000
@@ -166,6 +166,45 @@ while option != 0:
     for i in range(len(lst_event)):
       cur = con.cursor()
       cur.execute(lst_event[i])
+
+    #RUNNER
+    runner = races[['name', 'birth_date', 'sex', 'nation']]
+    runner_dic = dict()
+    lst_runner = list()
+    n = 1
+
+    for index, row in runner.iterrows():
+      t = [row['name'].replace("'", " "), row['birth_date'],list(sex_dic.keys())[list(sex_dic.values()).index(row['sex'])],list(nation_dic.keys())[list(nation_dic.values()).index(row['nation'])]]
+      if t not in runner_dic.values():
+        runner_dic[n] = t
+        t = f"INSERT INTO runner VALUES ({n}, '{runner_dic[n][0]}', '{datetime.strptime(str(runner_dic[n][1]), '%d/%m/%Y').strftime('%Y-%m-%d')}', {runner_dic[n][2]}, {runner_dic[n][3]});"
+        lst_runner.append(t)
+        n += 1
+
+    for i in range(len(lst_runner)):
+      cur = con.cursor()
+      cur.execute(lst_runner[i])
+
+    # CLASSIFICATION
+    classification = races[
+      ['name', 'birth_date', 'sex', 'nation', 'event', 'event_year', 'distance', 'bib', 'place', 'place_in_class',
+       'official_time', 'net_time', 'age_class',
+       'team']]
+
+    lst_classification = list()
+    for index, row in classification.iterrows():
+      run = [row['name'].replace("'", " "), row['birth_date'],list(sex_dic.keys())[list(sex_dic.values()).index(row['sex'])],list(nation_dic.keys())[list(nation_dic.values()).index(row['nation'])]]
+      eve = [row['event'], row['event_year'], list(distance_dic.keys())[list(distance_dic.values()).index(row['distance'])]]
+      t = [list(runner_dic.keys())[list(runner_dic.values()).index(run)],
+           list(event_dic.keys())[list(event_dic.values()).index(eve)],
+           row['bib'], row['place'], row['place_in_class'], row['official_time'], row['net_time'],
+           list(ageclass_dic.keys())[list(ageclass_dic.values()).index(row['age_class'])],
+           row['team']]
+      lst_classification.append(t)
+
+    for n in range(len(lst_classification)):
+      cur = con.cursor()
+      cur.execute(f"INSERT INTO classification VALUES ({lst_classification[n][0]}, {lst_classification[n][1]}, {lst_classification[n][2]}, {lst_classification[n][3]}, {lst_classification[n][4]}, '{str(pd.to_timedelta(lst_classification[n][5]))[7:]}', '{str(pd.to_timedelta(lst_classification[n][6]))[7:]}', {lst_classification[n][7]}, '{lst_classification[n][8]}');")
 
     con.commit()
     con.close()
