@@ -7,6 +7,7 @@ pd.set_option('display.width', 1000)  # para a largura do display ser de dimensa
 
 races = pd.read_excel('races.xlsx')
 races.columns = races.columns.str.replace(' ', '_')  # torna mais facil a utilizaçao das colunas
+races = races[races['age_class'].notna()]       #remove the NA values for the column Age_Class
 
 def menu():
   print("[1] Create connection to the PostgreSQL for Paulo")
@@ -60,6 +61,8 @@ while option != 0:
     print('\n')
     print('Dimensão da matriz')
     print(races.shape)
+    print('\n')
+    print(races.isnull().sum())
     print('\n')
   elif option == 5:
     cur = con.cursor()

@@ -25,7 +25,6 @@ def menu():
     print("[13] What teams had more than 3 participants in the 2016 maratona (team)?")
     print("[14] What are the 5 runners with more kilometers in total (name, birthdate, kms)?")
     print("[15] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
-    print("[16] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
 
     print("[0] Exit the program.")
 
