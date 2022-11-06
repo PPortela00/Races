@@ -1,11 +1,7 @@
-import pandas as pd
-import seaborn as sns
-import matplotlib as plt
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler
-import numpy as np
-import psycopg2
 from load_races import con
+from tabulate import tabulate
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def menu():
     print('\n')
@@ -38,26 +34,43 @@ while option != 0:
         columns = ["Name", "Birth_Date", "Time"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
+        print("\n")
+        print(tabulate(df, headers='keys', tablefmt='psql'))
     elif option == 2:
         cur = con.cursor()
-        cur.execute("""""")
+        cur.execute("""SELECT age_class, COUNT(*)
+FROM (SELECT DISTINCT r_id, age_class
+      FROM classification JOIN runner ON runner_id = r_id
+                          JOIN age_class ON class_id = a_id) AS age_classes
+GROUP BY age_class""")
         runners = cur.fetchall()
         from_db = []
         for runner in runners:
             result = list(runner)
             from_db.append(result)
-        columns = ["Name", "Birth_Date", "Time"]
+        columns = ["Age Class", "Nº of Runners"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
+        print("\n")
+        print(tabulate(df, headers='keys', tablefmt='plain'))
     elif option == 3:
         cur = con.cursor()
-        cur.execute("""""")
+        cur.execute("""SELECT name, b_date, COUNT(*)
+FROM classification JOIN runner ON runner_id = r_id
+WHERE place = '1'
+GROUP BY r_id
+HAVING COUNT(*) >= ALL (SELECT COUNT(*)
+                        FROM classification JOIN runner ON runner_id = r_id
+                        WHERE place = '1'
+                        GROUP BY r_id
+                        ORDER BY COUNT(*) DESC
+                        LIMIT 1)""")
         runners = cur.fetchall()
         from_db = []
         for runner in runners:
             result = list(runner)
             from_db.append(result)
-        columns = ["Name", "Birth_Date", "Time"]
+        columns = ["Name", "Birth Date", "Time"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
     elif option == 4:
@@ -72,7 +85,42 @@ while option != 0:
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
     elif option == 5:
-        print('\n')
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        cur = con.cursor()
+        cur.execute('SELECT sex, COUNT(*) as count FROM runner JOIN sex ON runner.sex_id = sex.s_id GROUP BY sex')
+        result = cur.fetchall()
+        # print(result)
+        ## the data
+
+        sex = []
+        count = []
+
+        for i in result:
+            sex.append(i[0])
+            count.append(i[1])
+
+        # colors
+        colors = ['#FF0000', '#0000FF']
+
+        # Pie Chart
+        plt.pie(count, colors=colors, labels=sex,
+                autopct='%1.1f%%', pctdistance=0.85)
+
+        # draw circle
+        centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+        fig = plt.gcf()
+
+        # Adding Circle in Pie chart
+        fig.gca().add_artist(centre_circle)
+
+        # Adding Title of chart
+        plt.title('Number of runners by gender')
+
+        # Add Legends
+        plt.legend(labels=sex, loc="upper right", title="sex")
+        plt.show()
+        con.close()
     elif option == 6:
         cur = con.cursor()
         cur.execute("""SELECT name, b_date, MIN(o_time)
@@ -92,7 +140,7 @@ GROUP BY r_id)""")
         for runner in runners:
             result = list(runner)
             from_db.append(result)
-        columns = ["Name", "Birth_Date", "Time"]
+        columns = ["Name", "Birth Date", "Time"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
     elif option == 7:
@@ -112,7 +160,7 @@ GROUP BY e_id)""")
         for race in races:
             result = list(race)
             from_db.append(result)
-        columns = ["Event", "Event_Year"]
+        columns = ["Event", "Event Year"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
     elif option == 8:

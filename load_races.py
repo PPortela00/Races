@@ -21,9 +21,10 @@ def menu():
   print("[1] Create connection to the PostgreSQL for Paulo")
   print("[2] Create connection to the PostgreSQL for Miguel")
   print("[3] Create connection to the PostgreSQL for Luis")
-  print("[4] Head, Size and Shape of Dataset")
-  print("[5] Remove all data from the database")
-  print("[6] Add all data to the database")
+  print("[4] Create an alternative connection to the PostgreSQL")
+  print("[5] Head, Size and Shape of Dataset")
+  print("[6] Remove all data from the database")
+  print("[7] Add all data to the database")
   print("[0] Let´s work with PostgreSQL and Python.")
 
 
@@ -58,10 +59,27 @@ while option != 0:
       password="henriques_luis_fced",  # your password
       host="dbm.fe.up.pt",  # the database host
       port=5433,  # the database host
-      options='-c search_path=schema'  # use the schema you want to connect to
+      options='-c search_path=public'  # use the schema you want to connect to
     )
     print(con)
   elif option == 4:
+
+    db = input('Insert the database name: ')
+    user = input('Insert the user name: ')
+    password = input('Insert the password: ')
+    host = input('Insert the host: ')
+    port = input('Insert the port: ')
+    schema = input('Insert the name of the schema: ')
+    con = psycopg2.connect(
+      database=db,  # your database is the same as your username
+      user=user,  # your username
+      password=password,  # your password
+      host=host,
+      port=port,  # the database host
+      options='-c search_path=' + schema  # use the schema you want to connect to
+    )
+    print(con)
+  elif option == 5:
     print('\n')
     print(races.head(5))
     print('\n')
@@ -73,7 +91,7 @@ while option != 0:
     print('\n')
     print(races.isnull().sum())
     print('\n')
-  elif option == 5:
+  elif option == 6:
     cur = con.cursor()
     cur.execute('DELETE FROM sex')
     cur.execute('DELETE FROM nation')
@@ -84,7 +102,7 @@ while option != 0:
     cur.execute('DELETE FROM classification')
     con.commit()
     print('All data was deleted with success')
-  elif option == 6:
+  elif option == 7:
 
     # SEX
     sex = races[['sex']]
@@ -216,6 +234,7 @@ while option != 0:
     con.close()
 
     print('All data was inserted with success')
+
   else:
     print("Invalid Option")
 
