@@ -9,11 +9,11 @@ from load_races import con
 
 def menu():
     print('\n')
-    print("[1] ")
-    print("[2]  ")
-    print("[3]  ")
-    print("[4] ")
-    print("[5] ")
+    print("[1] How many runners have more than 50 years old?")
+    print("[2] How many runners are in each age class?")
+    print("[3] Which runner has more 1st places?")
+    print("[4] What are the events with less then 42km distance?")
+    print("[5] Plot graphic for ")
     print("[6] ")
     print("[7] ")
     print("[8] ")
