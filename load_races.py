@@ -12,7 +12,7 @@ races = races[races['age_class'].notna()]       #remove the NA values for the co
 races = races.drop(labels=[19, 20, 21, 22])     #remove lines which name are ".." and "57655662"
 races['net_time'] = races['net_time'].fillna("00:00:00")
 races['team'] = races['team'].str.replace('\W', '', regex=True)
-races.drop_duplicates(subset=['name', 'event', 'event_year', 'birthdate'], keep='last')
+races.drop_duplicates(subset=['name', 'event', 'event_year', 'birth_date'], keep='last')
 
 #races['net_time'] = races.where(pd.notnull(races), None)
 #races['net_time'] = races['net_time'].replace(np.nan, None)
