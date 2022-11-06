@@ -68,3 +68,48 @@ ORDER BY SUM(distance.distance) DESC
 
 
 /* 5) What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)? */
+SELECT name, b_date, GREATEST(dif_1213, dif_1314, dif_1415, dif_1516) AS improvement
+FROM (
+
+SELECT name, b_date, o_time_2012 - o_time_2013 AS dif_1213, o_time_2013 - o_time_2014 AS dif_1314, o_time_2014 - o_time_2015 AS dif_1415, o_time_2015 - o_time_2016 AS dif_1516
+FROM (SELECT name, b_date, o_time AS o_time_2012, e_year
+      FROM classification JOIN event ON event_id = e_id
+                    JOIN runner ON runner_id = r_id
+      WHERE event.event = 'maratona'
+      GROUP BY r_id, o_time, e_year
+      HAVING e_year = 2012) AS year_2012 
+FULL OUTER JOIN (SELECT name, b_date, o_time AS o_time_2013, e_year
+      FROM classification JOIN event ON event_id = e_id
+                          JOIN runner ON runner_id = r_id
+      WHERE event.event = 'maratona'
+      GROUP BY r_id, o_time, e_year
+      HAVING e_year = 2013) AS year_2013 USING(name, b_date)
+FULL OUTER JOIN (SELECT name, b_date, o_time AS o_time_2014, e_year
+      FROM classification JOIN event ON event_id = e_id
+                          JOIN runner ON runner_id = r_id
+      WHERE event.event = 'maratona'
+      GROUP BY r_id, o_time, e_year
+      HAVING e_year = 2014) AS year_2014 USING(name, b_date)
+FULL OUTER JOIN (SELECT name, b_date, o_time AS o_time_2015, e_year
+      FROM classification JOIN event ON event_id = e_id
+                          JOIN runner ON runner_id = r_id
+      WHERE event.event = 'maratona'
+      GROUP BY r_id, o_time, e_year
+      HAVING e_year = 2015) AS year_2015 USING(name, b_date)
+FULL OUTER JOIN (SELECT name, b_date, o_time AS o_time_2016, e_year
+      FROM classification JOIN event ON event_id = e_id
+                          JOIN runner ON runner_id = r_id
+      WHERE event.event = 'maratona'
+      GROUP BY r_id, o_time, e_year
+      HAVING e_year = 2016) AS year_2016 USING(name, b_date)
+
+) AS differences
+
+GROUP BY name, b_date, improvement
+
+HAVING GREATEST(dif_1213, dif_1314, dif_1415, dif_1516) IS NOT NULL
+
+ORDER BY GREATEST(dif_1213, dif_1314, dif_1415, dif_1516) DESC
+
+LIMIT 1
+
