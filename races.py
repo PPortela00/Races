@@ -29,18 +29,7 @@ option = int(input("Insert the command that you want to execute:\n"))
 while option != 0:
     if option == 1:
         cur = con.cursor()
-        cur.execute("""SELECT name, b_date, MIN(o_time)
-        FROM classification JOIN event ON event_id = e_id
-                            JOIN distance ON event.distance = d_id
-                            JOIN runner ON runner_id = r_id
-        WHERE distance.distance = 10
-        GROUP BY r_id
-        HAVING MIN(o_time) <= ALL (SELECT MIN(o_time)
-        FROM classification JOIN event ON event_id = e_id
-                            JOIN distance ON event.distance = d_id
-                            JOIN runner ON runner_id = r_id
-        WHERE distance.distance = 10
-        GROUP BY r_id)""")
+        cur.execute("""""")
         runners = cur.fetchall()
         from_db = []
         for runner in runners:
@@ -50,11 +39,38 @@ while option != 0:
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
     elif option == 2:
-        print('\n')
+        cur = con.cursor()
+        cur.execute("""""")
+        runners = cur.fetchall()
+        from_db = []
+        for runner in runners:
+            result = list(runner)
+            from_db.append(result)
+        columns = ["Name", "Birth_Date", "Time"]
+        df = pd.DataFrame(from_db, columns=columns)
+        print(df)
     elif option == 3:
-        print('\n')
+        cur = con.cursor()
+        cur.execute("""""")
+        runners = cur.fetchall()
+        from_db = []
+        for runner in runners:
+            result = list(runner)
+            from_db.append(result)
+        columns = ["Name", "Birth_Date", "Time"]
+        df = pd.DataFrame(from_db, columns=columns)
+        print(df)
     elif option == 4:
-        print('\n')
+        cur = con.cursor()
+        cur.execute("""""")
+        events = cur.fetchall()
+        from_db = []
+        for event in events:
+            result = list(event)
+            from_db.append(result)
+        columns = ["Name", "Birth_Date", "Time"]
+        df = pd.DataFrame(from_db, columns=columns)
+        print(df)
     elif option == 5:
         print('\n')
     elif option == 6:
