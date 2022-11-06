@@ -5,6 +5,6 @@ Nation (n_id, name [UK, NN])
 Runner (r_id, name [UK, NN], b_date [UK, NN], #sex_id -> sex [UK], #nation_id ->Nation)
 Age_class (a_id, age_class [UK, NN])
 Event (e_id, event [NN], e_year [NN], #distance->Distance [NN])
-Classification (#runner_id -> Runner ,#event_id -> Event, class_id, place  [NN], c_class [NN], o_time [NN],n_time  [NN], team, bib [NN]) {UK: event_id, bib} 
+Classification (#runner_id -> Runner ,#event_id -> Event, class_id, place  [NN], c_class [NN], o_time [NN],n_time, team, bib [NN]) {UK: event_id, bib} 
                {UK: event_id, place} 
 Distance (d_id, distance [UK, NN])
