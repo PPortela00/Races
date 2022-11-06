@@ -9,7 +9,7 @@ Below, all the tasks carried out throughout the development of the project will 
 **UML Diagram (uml.png)** - Regarding the UML and the work that each one carried out at this stage, since this is the starting point of the database and the construction, this was one of the processes that required the most time and attention. We decided that each one would make their own and later we would join, analyse all the diagrams in order to obtain the most complete one that best fits and responds to all cases
 
 **Relational Text (relational.txt)** - The relational model was then carried out following the joint elaboration of the UML diagram.
-After the development of the UML diagram it was easy and intuitive to create the relational model based on the knowledge acquired during the course. Briefly, this step was also elaborate together.
+After the development of the UML diagram it was easy and intuitive to create the relational model based on the knowledge acquired during the course. Briefly, this step was also elaborated together.
 
 **SQL Script for the creation of the DB (races.sql)** - After defining the structure of the database, Miguel was in charge of developing the SQL script that would allow the creation of the database in PostgreSQL, in the public schema, as requested.
 
