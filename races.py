@@ -258,8 +258,6 @@ LIMIT 1
         columns = ["Name", "Birth Date", "Improvement"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
-    elif option == 100:
-        print('\n')
     else:
         print("Invalid Option")
 
