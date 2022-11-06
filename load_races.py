@@ -1,6 +1,7 @@
 import pandas as pd
 import psycopg2
 from datetime import datetime
+#import numpy as np
 
 pd.set_option('display.max_columns', None)  # para poder visualizar todas as colunas no display
 pd.set_option('display.width', 1000)  # para a largura do display ser de dimensao 1000
@@ -9,7 +10,10 @@ races = pd.read_excel('races.xlsx')
 races.columns = races.columns.str.replace(' ', '_')  # torna mais facil a utilizaçao das colunas
 races = races[races['age_class'].notna()]       #remove the NA values for the column Age_Class
 races = races.drop(labels=[19, 20, 21, 22])     #remove lines which name are ".." and "57655662"
-
+races['net_time'] = races['net_time'].fillna("00:00:00")
+races['team'] = races['team'].str.replace('\W', '', regex=True)
+#races['net_time'] = races.where(pd.notnull(races), None)
+#races['net_time'] = races['net_time'].replace(np.nan, None)
 
 def menu():
   print("[1] Create connection to the PostgreSQL for Paulo")
