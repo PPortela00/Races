@@ -117,6 +117,33 @@ LIMIT 1
 
 
 /* 6) How many runners have more than 50 years old? */
-/* 7) How many runners are in each age class? */
-/* 8) Which runner has more 1st places? */
+
+
+
+
+
+
+
+/* 7) How many runners are in each age class? (age_class, count) */
+SELECT age_class, COUNT(*)
+FROM (SELECT DISTINCT r_id, age_class
+      FROM classification JOIN runner ON runner_id = r_id
+                          JOIN age_class ON class_id = a_id) AS age_classes
+GROUP BY age_class
+
+
+/* 8) Which runner has more 1st places? (name, birthdate, count) */
+SELECT name, b_date, COUNT(*)
+FROM classification JOIN runner ON runner_id = r_id
+WHERE place = '1'
+GROUP BY r_id
+HAVING COUNT(*) >= ALL (SELECT COUNT(*)
+                        FROM classification JOIN runner ON runner_id = r_id
+                        WHERE place = '1'
+                        GROUP BY r_id
+                        ORDER BY COUNT(*) DESC
+                        LIMIT 1)
+
+
+
 /* 9) What are the events with less then 42km distance? */
