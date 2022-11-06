@@ -1,7 +1,6 @@
 import pandas as pd
 import psycopg2
 from datetime import datetime
-#import numpy as np
 
 pd.set_option('display.max_columns', None)  # para poder visualizar todas as colunas no display
 pd.set_option('display.width', 1000)  # para a largura do display ser de dimensao 1000
@@ -14,8 +13,6 @@ races['net_time'] = races['net_time'].fillna("00:00:00")
 races['team'] = races['team'].str.replace('\W', '', regex=True)
 races.drop_duplicates(subset=['name', 'event', 'event_year', 'birth_date'], keep='last')
 
-#races['net_time'] = races.where(pd.notnull(races), None)
-#races['net_time'] = races['net_time'].replace(np.nan, None)
 
 def menu():
   print("[1] Create connection to the PostgreSQL for Paulo")

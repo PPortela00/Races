@@ -2,20 +2,22 @@ from load_races import con
 from tabulate import tabulate
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 def menu():
     print('\n')
-    print("[1] How many runners have more than 50 years old?")
-    print("[2] How many runners are in each age class?")
-    print("[3] Which runner has more 1st places?")
-    print("[4] What are the events with less then 42km distance?")
-    print("[5] Plot graphic for ")
+    print("[1] How many runners with more than 70 years of age have signed up in each type of event? (event, desc order count)")
+    print("[2] How many runners are in each age class? (age_class, count)")
+    print("[3] Which runner has more 1st places? (name, birthdate, count)")
+    print("[4] What are the events with less then 42km distance? (event, year, distance)")
+    print("[5] Chart for the percentage of the runners considering the Gender")
+    print("[6] Chart for the Top 5 runners considering the maximum total distance ran")
     print("---------------------------5 Questions ---------------------------")
-    print("[6] Who run the fastest 10K race ever (name, birthdate, time)")
-    print("[7] What 10K race had the fastest average time (event, event date)?")
-    print("[8] What teams had more than 3 participants in the 2016 maratona (team)?")
-    print("[9] What are the 5 runners with more kilometers in total (name, birthdate, kms)?")
-    print("[10] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
+    print("[7] Who run the fastest 10K race ever (name, birthdate, time)")
+    print("[8] What 10K race had the fastest average time (event, event date)?")
+    print("[9] What teams had more than 3 participants in the 2016 maratona (team)?")
+    print("[10] What are the 5 runners with more kilometers in total (name, birthdate, kms)?")
+    print("[11] What was the best time improvement in two consecutive maratona races (name,birthdate, improvement)?")
 
     print("[0] Exit the program.")
 
@@ -25,17 +27,20 @@ option = int(input("Insert the command that you want to execute:\n"))
 while option != 0:
     if option == 1:
         cur = con.cursor()
-        cur.execute("""""")
+        cur.execute("""SELECT event, COUNT(*)
+FROM runner JOIN classification ON r_id = runner_id
+            JOIN event ON event_id = e_id
+WHERE EXTRACT(YEAR FROM age(CURRENT_DATE, runner.b_date)) > 70
+GROUP BY event
+ORDER BY COUNT(*) DESC""")
         runners = cur.fetchall()
         from_db = []
         for runner in runners:
             result = list(runner)
             from_db.append(result)
-        columns = ["Name", "Birth_Date", "Time"]
+        columns = ["Event", "No. of Old People Registrations"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
-        print("\n")
-        print(tabulate(df, headers='keys', tablefmt='psql'))
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
     elif option == 2:
         cur = con.cursor()
         cur.execute("""SELECT age_class, COUNT(*)
@@ -48,11 +53,9 @@ GROUP BY age_class""")
         for runner in runners:
             result = list(runner)
             from_db.append(result)
-        columns = ["Age Class", "Nº of Runners"]
+        columns = ["Age Class", "No. of Runners"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
-        print("\n")
-        print(tabulate(df, headers='keys', tablefmt='plain'))
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
     elif option == 3:
         cur = con.cursor()
         cur.execute("""SELECT name, b_date, COUNT(*)
@@ -70,20 +73,22 @@ HAVING COUNT(*) >= ALL (SELECT COUNT(*)
         for runner in runners:
             result = list(runner)
             from_db.append(result)
-        columns = ["Name", "Birth Date", "Time"]
+        columns = ["Name", "Birth Date", "Nº of 1st Places"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
     elif option == 4:
         cur = con.cursor()
-        cur.execute("""""")
+        cur.execute("""SELECT DISTINCT event, distance.distance
+FROM event JOIN distance ON event.distance = d_id
+WHERE distance.distance < 42""")
         events = cur.fetchall()
         from_db = []
         for event in events:
             result = list(event)
             from_db.append(result)
-        columns = ["Name", "Birth_Date", "Time"]
+        columns = ["Event", "Distance"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
     elif option == 5:
         fig = plt.figure()
         ax = fig.add_subplot(111)
@@ -120,8 +125,47 @@ HAVING COUNT(*) >= ALL (SELECT COUNT(*)
         # Add Legends
         plt.legend(labels=sex, loc="upper right", title="sex")
         plt.show()
-        con.close()
     elif option == 6:
+        cur = con.cursor()
+        cur.execute("""SELECT name, SUM(distance.distance) AS total_kms
+                        FROM classification JOIN runner ON runner_id = r_id
+                        JOIN event ON event_id = e_id JOIN distance ON event.distance = d_id
+                        GROUP BY r_id
+                        HAVING SUM(distance.distance) IN ( SELECT SUM(distance.distance)
+                        FROM classification JOIN runner ON runner_id = r_id 
+                        JOIN event ON event_id = e_id JOIN distance ON event.distance = d_id
+                        GROUP BY r_id
+                        ORDER BY SUM(distance.distance)
+                        DESC LIMIT 5)
+                        ORDER BY SUM(distance.distance) DESC""")
+        result = cur.fetchall()
+
+        name = []
+        total_kms = []
+
+        for i in result:
+            name.append(i[0])
+            total_kms.append(i[1])
+
+        df = pd.DataFrame({'total_kms': total_kms}, index=name)
+
+        # plot
+        g = sns.catplot(kind='bar', data=df, x=name, y=total_kms, height=5, aspect=1.5)
+
+        # iterate through the axes
+        for ax in g.axes.flat:
+            # annotate
+            ax.bar_label(ax.containers[0], label_type='edge')
+
+            # pad the spacing between the number and the edge of the figure; should be in the loop, otherwise only the last subplot would be adjusted
+            ax.margins(y=0.1)
+
+        plt.xlabel("Runner")
+        plt.ylabel("Total kms")
+        plt.title("TOP 5 runners")
+        plt.xticks(rotation=0, horizontalalignment="center")
+        plt.show()
+    elif option == 7:
         cur = con.cursor()
         cur.execute("""SELECT name, b_date, MIN(o_time)
 FROM classification JOIN event ON event_id = e_id
@@ -142,8 +186,8 @@ GROUP BY r_id)""")
             from_db.append(result)
         columns = ["Name", "Birth Date", "Time"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
-    elif option == 7:
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
+    elif option == 8:
         cur = con.cursor()
         cur.execute("""SELECT event, e_year
 FROM classification JOIN event ON event_id = e_id
@@ -162,8 +206,8 @@ GROUP BY e_id)""")
             from_db.append(result)
         columns = ["Event", "Event Year"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
-    elif option == 8:
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
+    elif option == 9:
         cur = con.cursor()
         cur.execute("""SELECT team
 FROM classification JOIN event ON event_id = e_id
@@ -178,7 +222,7 @@ HAVING COUNT (*) > 3""")
         columns = ["Team"]
         df = pd.DataFrame(from_db, columns=columns)
         print(df)
-    elif option == 9:
+    elif option == 10:
         cur = con.cursor()
         cur.execute("""SELECT name, b_date, SUM(distance.distance) AS total_kms
 FROM classification JOIN runner ON runner_id = r_id
@@ -202,8 +246,8 @@ ORDER BY SUM(distance.distance) DESC""")
             from_db.append(result)
         columns = ["Name", "Birth Date", "Total KM´s"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
-    elif option == 10:
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
+    elif option == 11:
         cur = con.cursor()
         cur.execute("""SELECT name, b_date, GREATEST(dif_1213, dif_1314, dif_1415, dif_1516) AS improvement
 FROM (
@@ -257,7 +301,7 @@ LIMIT 1
             from_db.append(result)
         columns = ["Name", "Birth Date", "Improvement"]
         df = pd.DataFrame(from_db, columns=columns)
-        print(df)
+        print(tabulate(df, headers='keys', showindex=False, tablefmt='orgtbl'))
     else:
         print("Invalid Option")
 
@@ -265,4 +309,5 @@ LIMIT 1
     menu()
     option = int(input("Insert the command that you want to execute:"))
 
+print("\n")
 print("Thanks for using this program. See you soon")
