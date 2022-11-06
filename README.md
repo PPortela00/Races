@@ -1,7 +1,7 @@
 # Races
 
 This database creation and manipulation is part of the course Fundamentals of Data Science and Engineering from
-FEUP, Faculty of Engineering - University of Porto, and aims at answer the questions propsed and formulating a question (or a
+FEUP, Faculty of Engineering - University of Porto, and aims to answer the questions proposed and fotmulated a question (or a
 set of questions). 
 
 Below, all the tasks carried out throughout the development of the project will be discussed and what is the importance/component made by the different members:
