@@ -113,3 +113,10 @@ ORDER BY GREATEST(dif_1213, dif_1314, dif_1415, dif_1516) DESC
 
 LIMIT 1
 
+
+
+
+/* 6) How many runners have more than 50 years old? */
+/* 7) How many runners are in each age class? */
+/* 8) Which runner has more 1st places? */
+/* 9) What are the events with less then 42km distance? */
