@@ -1,7 +1,7 @@
 /* 1) How many runners with more than 70 years of age have signed up in each type of event? (event, desc order count)  */
 /* 2) How many runners are in each age class? (age_class, count) */
 /* 3) Which runner has more 1st places? (name, birthdate, count) */
-/* 4) What are the events with less then 42km distance? (event, distance) */
+/* 4) What are the events with less then 42km distance? (event, year, distance) */
 /*---------------------------5 Questions ---------------------------*/
 /* 5) Who run the fastest 10K race ever (name, birthdate, time) */
 /* 6) What 10K race had the fastest average time (event, event date)? */
